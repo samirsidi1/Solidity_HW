@@ -1,0 +1,53 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 pragma solidity ^0.6.0;\
+\
+import "github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol";\
+\
+contract AssociateProfitSplitter \{\
+\
+using SafeMath for uint;\
+\
+address payable public employee_one;\
+address payable public employee_two;\
+address payable public employee_three;\
+\
+mapping(address => uint) balances;\
+\
+constructor(address payable _one, address payable _two, address payable _three) public \{\
+    employee_one = 0xDf639ADAe65dBa25B7CF16F09394423100c45240;\
+    employee_two = 0xc28BDE2EbE29A8943257863b624637E2bAd230a2;\
+    employee_three = 0x13FAF27F82c14Eca998D61D095a4F25dB7Cb9B01;\
+\}\
+\
+function balance() public view returns(uint) \{\
+    return msg.sender.balance;\
+\}\
+function deposit(uint amount) public payable \{ amount = msg.value.div(3); balances[msg.sender] = balances[msg.sender].sub(amount * 3); balances[employee_one] = balances[employee_one].add(amount); balances[employee_two] = balances[employee_two].add(amount); balances[employee_three] = balances[employee_three].add(amount);\
+\
+   return msg.sender.transfer(msg.value - amount * 3); \
+\}\
+\
+fallback() external payable \{\}\
+\}\
+\
+pragma solidity ^0.5.0;\
+\
+contract JointSavings \{\
+  address payable account_one = 0xDf639ADAe65dBa25B7CF16F09394423100c45240;\
+  address payable account_two = 0xc28BDE2EbE29A8943257863b624637E2bAd230a2;\
+  address payable account_three = 0x13FAF27F82c14Eca998D61D095a4F25dB7Cb9B01;\
+\
+  function withdraw(uint amount, address payable recipient) public \{\
+    return recipient.transfer(amount);\
+  \}\
+\
+  function deposit() public payable \{\}\
+\
+  function() external payable \{\}\
+\}}
